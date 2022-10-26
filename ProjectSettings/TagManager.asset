@@ -13,7 +13,7 @@ TagManager:
   - UI
   - Collision
   - Victory
-  - 
+  - Spike
   - 
   - 
   - 
@@ -38,6 +38,15 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 3604401063
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Player
+    uniqueID: 4005076673
+    locked: 0
+  - name: UI
+    uniqueID: 3820909007
     locked: 0

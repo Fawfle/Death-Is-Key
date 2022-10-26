@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 18a85d7b5eebf154a8b11918c7afc01c
+guid: d87cf023416510f4fb54be9985d83988
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -117,13 +117,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Ground_0
+      name: big-ankh 1_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 28
-        width: 8
-        height: 8
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -131,20 +131,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 92a80e1d2038da94280a7b151d68be80
-      internalID: -990864188
+      spriteID: ab67e851607a93347a51d8d192f99c4b
+      internalID: 1149210574
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ground_1
+      name: big-ankh 1_1
       rect:
         serializedVersion: 2
-        x: 8
-        y: 28
-        width: 8
-        height: 8
+        x: 32
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -152,20 +152,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 51b2ce884ae03024f8e694037bab490c
-      internalID: 1401641233
+      spriteID: 0123fb0c893ba83478d2ddc828c6f1df
+      internalID: -1925883551
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ground_2
+      name: big-ankh 1_2
       rect:
         serializedVersion: 2
-        x: 16
-        y: 28
-        width: 8
-        height: 8
+        x: 64
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -173,20 +173,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b41b26bb6f8dd01488fb88e69367e547
-      internalID: 1196045104
+      spriteID: 37cad00be95f0564e907f3e1394b6550
+      internalID: -788511684
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ground_3
+      name: big-ankh 1_3
       rect:
         serializedVersion: 2
-        x: 0
-        y: 20
-        width: 8
-        height: 8
+        x: 96
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -194,20 +194,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fe31a6070310f754c8019f9105556185
-      internalID: 1036708079
+      spriteID: 55ac754b609eb3044bd567d6b62d0658
+      internalID: -1866412104
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ground_4
+      name: big-ankh 1_4
       rect:
         serializedVersion: 2
-        x: 16
-        y: 20
-        width: 8
-        height: 8
+        x: 128
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -215,113 +215,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: eed712c148b6f9f40a46b6cba4dcfc3e
-      internalID: 1048372488
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Ground_5
-      rect:
-        serializedVersion: 2
-        x: 24
-        y: 20
-        width: 8
-        height: 8
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 3982e4cafb97231479d84a5fe2e76a87
-      internalID: -1113531491
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Ground_6
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 12
-        width: 8
-        height: 8
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ba68bf83d7e3e0c4282b2429f08402f0
-      internalID: 1927510663
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Ground_7
-      rect:
-        serializedVersion: 2
-        x: 8
-        y: 12
-        width: 8
-        height: 8
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f62ee84b2d623384f920af47b6f2a1ae
-      internalID: -1412198191
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Ground_8
-      rect:
-        serializedVersion: 2
-        x: 16
-        y: 12
-        width: 8
-        height: 8
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 09c0a46128f0c0740b7717591b3084e7
-      internalID: 2007559651
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Ground_9
-      rect:
-        serializedVersion: 2
-        x: 24
-        y: 12
-        width: 8
-        height: 8
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 1d204594cce25664c9b6048c77c0ad76
-      internalID: 1117280122
+      spriteID: 226cbc50b012e57459180c0d92899394
+      internalID: -1513289759
       vertices: []
       indices: 
       edges: []
@@ -337,16 +232,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Ground_9: 1117280122
-      Ground_5: -1113531491
-      Ground_3: 1036708079
-      Ground_0: -990864188
-      Ground_4: 1048372488
-      Ground_8: 2007559651
-      Ground_6: 1927510663
-      Ground_2: 1196045104
-      Ground_7: -1412198191
-      Ground_1: 1401641233
+      big-ankh 1_4: -1513289759
+      big-ankh 1_3: -1866412104
+      big-ankh 1_1: -1925883551
+      big-ankh 1_2: -788511684
+      big-ankh 1_0: 1149210574
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
