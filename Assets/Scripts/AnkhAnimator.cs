@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class AnkhAnimator : MonoBehaviour
 {
     public static AnkhAnimator instance;
+    public Action Respawn;
 
     private  Image image;
     public Animator anim;
@@ -33,6 +35,11 @@ public class AnkhAnimator : MonoBehaviour
 	{
         //print(sprites.IndexOf(sprite));
         image.sprite = sprites[sprites.IndexOf(sprite) + 1];
+	}
+
+    void RespawnEvent()
+	{
+        Respawn?.Invoke();
 	}
 
     public void PlayAnimation()

@@ -68,23 +68,34 @@ public class Manager : MonoBehaviour
 
     public void Die()
 	{
-        IEnumerator DeathRoutine()
-		{
-            moveListIndex++;
-            if (moveListIndex >= moveList.Count) { Lose(); yield break; }
+        moveListIndex++;
+        if (moveListIndex >= moveList.Count) { Lose(); return; }
 
-            AnkhAnimator.instance.PlayAnimation();
-            yield return new WaitForSeconds(AnkhAnimator.instance.anim.GetCurrentAnimatorStateInfo(0).length);
-            player.transform.position = playerStartPos;
-
-            Destroy(moveLayout.transform.GetChild(0).gameObject);
-            SetMoves(moveList[moveListIndex]);
-            PlayerMovement.instance.ChangeState("idle");
-		}
-        StartCoroutine(DeathRoutine());
+        AnkhAnimator.instance.PlayAnimation();
 	}
 
-    public void Lose()
+    public void Respawn()
+	{
+        player.transform.position = playerStartPos;
+
+        Destroy(moveLayout.transform.GetChild(0).gameObject);
+        SetMoves(moveList[moveListIndex]);
+        PlayerMovement.instance.ChangeState("idle");
+    }
+
+	private void OnEnable()
+	{
+        AnkhAnimator.instance.Respawn += Respawn;
+	}
+
+	private void OnDisable()
+	{
+        AnkhAnimator.instance.Respawn -= Respawn;
+    }
+
+
+
+	public void Lose()
 	{
 		loseScreenAnim.Play("Slide In");
 	}
