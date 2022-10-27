@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour
 
 
     public float timeToMove = 1f;
-	public LayerMask collisionLayer, victoryLayer, spikeLayer;
+	public LayerMask collisionLayer, victoryLayer, spikeLayer, keyLayer;
 
 	private string state = "idle";
 
@@ -89,13 +89,23 @@ public class PlayerMovement : MonoBehaviour
 
 		if (state == "idle")
 		{
-			if (Physics2D.OverlapCircle(transform.position, 0.2f, victoryLayer))
+			GameObject collision = Physics2D.OverlapCircle(transform.position, 0.2f).gameObject;
+		
+            if (collision.layer == victoryLayer)
 			{
 				print("win");
 				ChangeState("win");
 				return;
 			}
-			if (Physics2D.OverlapCircle(transform.position, 0.2f, spikeLayer))
+			else if (collision.layer == keyLayer)
+            {
+				Manager.instance.keys++;
+				Animator keyAnim = collision.GetComponent<Animator>();
+				//keyAnim.Play("");
+				//Destroy(collision.gameObject, keyAnim.GetCurrentAnimatorStateInfo(0).length);
+				Destroy(collision);
+            }
+			else if (collision.layer == spikeLayer)
 			{
 				Die();
 			}

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
 
+
 public class Manager : MonoBehaviour
 {
     public static Manager instance;
@@ -20,6 +21,8 @@ public class Manager : MonoBehaviour
     public int moveListIndex = 0;
 
     public int moves;
+
+    public int keys = 0;
 
 
     private void Awake()
