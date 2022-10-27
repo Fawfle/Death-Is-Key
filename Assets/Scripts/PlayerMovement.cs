@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -52,6 +53,12 @@ public class PlayerMovement : MonoBehaviour
 						// pushblock.push returns a bool based on if block can be pushed
 						if (!pushBlock.Push(moveEndPos - transform.position)) ChangeState("pushing");
 					}
+					else if (collision.CompareTag("Door") && Manager.instance.keys > 0)
+                    {
+						Manager.instance.keys--;
+						Destroy(collision.gameObject);
+                        ChangeState("moving");
+                    }
 					// return if collision
 					else return;
 				}
@@ -89,29 +96,31 @@ public class PlayerMovement : MonoBehaviour
 
 		if (state == "idle")
 		{
-			GameObject collision = Physics2D.OverlapCircle(transform.position, 0.2f).gameObject;
-		
-            if (collision.layer == victoryLayer)
-			{
-				print("win");
-				ChangeState("win");
-				return;
+			Collider2D collisionCollider = Physics2D.OverlapCircle(transform.position, 0.2f);
+			if (collisionCollider != null) {
+				GameObject collision = collisionCollider.gameObject;
+				if (checkLayer(collision, victoryLayer))
+                {
+					print("win");
+					ChangeState("win");
+					return;
+				}
+				else if (checkLayer(collision, keyLayer))
+				{
+					Manager.instance.keys++;
+					Animator keyAnim = collision.GetComponent<Animator>();
+					//keyAnim.Play("");
+					//Destroy(collision.gameObject, keyAnim.GetCurrentAnimatorStateInfo(0).length);
+					Destroy(collision);
+				}
+				else if (checkLayer(collision, spikeLayer))
+				{
+					Die();
+					return;
+				}
 			}
-			else if (collision.layer == keyLayer)
-            {
-				Manager.instance.keys++;
-				Animator keyAnim = collision.GetComponent<Animator>();
-				//keyAnim.Play("");
-				//Destroy(collision.gameObject, keyAnim.GetCurrentAnimatorStateInfo(0).length);
-				Destroy(collision);
-            }
-			else if (collision.layer == spikeLayer)
-			{
-				Die();
-			}
-
-			else Manager.instance.CheckMoves();
-		}
+            Manager.instance.CheckMoves();
+        }
 
 		if (state == "moving")
 		{
@@ -137,4 +146,9 @@ public class PlayerMovement : MonoBehaviour
 		Manager.instance.Die();
 		ChangeState("die");
 	}
+
+	bool checkLayer(GameObject obj, LayerMask layer)
+    {
+		return (layer | (1 << obj.layer)) == layer;
+    }
 }
