@@ -10,6 +10,8 @@ public class Manager : MonoBehaviour
     public static Manager instance;
     private TMP_Text movesText;
     private Animator loseScreenAnim, transitionAnim;
+    private GameObject moveLayout;
+    public GameObject ankhMoveDisplay;
 
     private GameObject player;
     private Vector3 playerStartPos;
@@ -31,9 +33,16 @@ public class Manager : MonoBehaviour
         movesText = GameObject.Find("MoveDisplay").GetComponent<TMP_Text>();
         loseScreenAnim = GameObject.Find("Retry Screen").GetComponent<Animator>();
         transitionAnim = GameObject.Find("Transition Screen").GetComponent<Animator>();
+        moveLayout = GameObject.Find("Move Layout");
         GameObject.Find("Retry Button").GetComponent<Button>().onClick.AddListener(Reset);
 
         playerStartPos = player.transform.position;
+
+        for (int i = 1; i< moveList.Count; i++)
+		{
+            GameObject g = Instantiate(ankhMoveDisplay, moveLayout.transform);
+            g.transform.GetChild(0).GetComponent<TMP_Text>().text = moveList[i].ToString();
+		}
 
         SetMoves(moveList[0]);
     }
@@ -41,7 +50,7 @@ public class Manager : MonoBehaviour
     public void SetMoves(int newMoves)
 	{
         moves = newMoves;
-        movesText.text = $"Moves: {moves}";
+        movesText.text = $"{moves}";
     }
 
 	public void Move()
@@ -68,6 +77,7 @@ public class Manager : MonoBehaviour
             yield return new WaitForSeconds(AnkhAnimator.instance.anim.GetCurrentAnimatorStateInfo(0).length);
             player.transform.position = playerStartPos;
 
+            Destroy(moveLayout.transform.GetChild(0).gameObject);
             SetMoves(moveList[moveListIndex]);
             PlayerMovement.instance.ChangeState("idle");
 		}

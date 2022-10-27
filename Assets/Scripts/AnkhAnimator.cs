@@ -31,7 +31,7 @@ public class AnkhAnimator : MonoBehaviour
 
     void CrackAnkh()
 	{
-        print(sprites.IndexOf(sprite));
+        //print(sprites.IndexOf(sprite));
         image.sprite = sprites[sprites.IndexOf(sprite) + 1];
 	}
 

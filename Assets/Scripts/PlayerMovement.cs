@@ -6,6 +6,8 @@ using System;
 public class PlayerMovement : MonoBehaviour
 {
 	public static PlayerMovement instance;
+	public Action onMove;
+
 
     public float timeToMove = 1f;
 	public LayerMask collisionLayer, victoryLayer, spikeLayer;
@@ -33,6 +35,7 @@ public class PlayerMovement : MonoBehaviour
 				float horizontalInput = Input.GetAxisRaw("Horizontal");
 				float verticalInput = Input.GetAxisRaw("Vertical");
 
+				// return if no movement
 				if (horizontalInput == 0 && verticalInput == 0) return;
 
 				moveEndPos = transform.position;
@@ -49,10 +52,14 @@ public class PlayerMovement : MonoBehaviour
 						// pushblock.push returns a bool based on if block can be pushed
 						if (!pushBlock.Push(moveEndPos - transform.position)) ChangeState("pushing");
 					}
+					// return if collision
+					else return;
 				}
 				else { 
 					ChangeState("moving");
 				}
+				// if succesfully gotten here move must have been sucessful
+				onMove?.Invoke();
 
 				break;
 			case "moving":
@@ -82,7 +89,12 @@ public class PlayerMovement : MonoBehaviour
 
 		if (state == "idle")
 		{
-			if (Physics2D.OverlapCircle(transform.position, 0.2f, victoryLayer)) print("win");
+			if (Physics2D.OverlapCircle(transform.position, 0.2f, victoryLayer))
+			{
+				print("win");
+				ChangeState("win");
+				return;
+			}
 			if (Physics2D.OverlapCircle(transform.position, 0.2f, spikeLayer))
 			{
 				Die();
