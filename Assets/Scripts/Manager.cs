@@ -13,6 +13,7 @@ public class Manager : MonoBehaviour
     private Animator loseScreenAnim, transitionAnim;
     private GameObject moveLayout;
     public GameObject ankhMoveDisplay;
+    private Button retryButton;
 
     private GameObject player;
     private Vector3 playerStartPos;
@@ -24,6 +25,8 @@ public class Manager : MonoBehaviour
 
     public int keys = 0;
 
+    public bool tutorial = false;
+
 
     private void Awake()
 	{
@@ -33,11 +36,15 @@ public class Manager : MonoBehaviour
 	void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        movesText = GameObject.Find("MoveDisplay").GetComponent<TMP_Text>();
+        if (!tutorial)
+        {
+            movesText = GameObject.Find("MoveDisplay").GetComponent<TMP_Text>();
+        }
         loseScreenAnim = GameObject.Find("Retry Screen").GetComponent<Animator>();
         transitionAnim = GameObject.Find("Transition Screen").GetComponent<Animator>();
         moveLayout = GameObject.Find("Move Layout");
-        GameObject.Find("Retry Button").GetComponent<Button>().onClick.AddListener(Reset);
+        retryButton = GameObject.Find("Retry Button").GetComponent<Button>();
+        retryButton.onClick.AddListener(Reset);
 
         playerStartPos = player.transform.position;
 
@@ -53,12 +60,12 @@ public class Manager : MonoBehaviour
     public void SetMoves(int newMoves)
 	{
         moves = newMoves;
-        movesText.text = $"{moves}";
+        if (!tutorial) movesText.text = $"{moves}";
     }
 
 	public void Move()
 	{
-        SetMoves(moves - 1);
+        if (!tutorial) SetMoves(moves - 1);
     }
 
     public void CheckMoves()
@@ -73,7 +80,6 @@ public class Manager : MonoBehaviour
 	{
         moveListIndex++;
         if (moveListIndex >= moveList.Count) { Lose(); return; }
-
         AnkhAnimator.instance.PlayAnimation();
 	}
 
@@ -84,6 +90,7 @@ public class Manager : MonoBehaviour
         Destroy(moveLayout.transform.GetChild(0).gameObject);
         SetMoves(moveList[moveListIndex]);
         PlayerMovement.instance.ChangeState("idle");
+        PlayerMovement.instance.locked = true;
     }
 
 	private void OnEnable()
@@ -101,6 +108,32 @@ public class Manager : MonoBehaviour
 	public void Lose()
 	{
 		loseScreenAnim.Play("Slide In");
+        PlayerMovement.instance.anim.Play("Lose");
+	}
+
+    public void Continue()
+	{
+        loseScreenAnim.Play("Slide In");
+        // reuse lose screen
+        loseScreenAnim.gameObject.transform.GetChild(0).gameObject.GetComponent<TMP_Text>().text = " YOU WIN!";
+        retryButton.onClick.RemoveAllListeners();
+        retryButton.transform.GetChild(0).gameObject.GetComponent<TMP_Text>().text = "CONTINUE";
+        retryButton.onClick.AddListener(() => StartCoroutine(LoadNextScene()));
+    }
+
+    IEnumerator LoadNextScene()
+	{
+        transitionAnim.Play("Fade In");
+        yield return new WaitForSeconds(transitionAnim.GetCurrentAnimatorStateInfo(0).length);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+	}
+
+	private void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.R))
+		{
+            Reset();
+		}
 	}
 
 	public void Reset()

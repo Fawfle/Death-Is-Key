@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Door
+  - Block
+  - Pit
+  - Music
   layers:
   - Default
   - TransparentFX

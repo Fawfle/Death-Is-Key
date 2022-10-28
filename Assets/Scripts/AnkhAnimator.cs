@@ -42,6 +42,11 @@ public class AnkhAnimator : MonoBehaviour
         Respawn?.Invoke();
 	}
 
+    void GiveControl()
+    {
+        PlayerMovement.instance.locked = false;
+    }
+
     public void PlayAnimation()
 	{
         anim.Play("Effect");

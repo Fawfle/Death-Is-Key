@@ -7,7 +7,11 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 public class PlayerMovement : MonoBehaviour
 {
 	public static PlayerMovement instance;
+	[HideInInspector] public Animator anim;
+	[HideInInspector] public SpriteRenderer spriteRenderer;
 	public Action onMove;
+
+	public bool locked = false;
 
 
     public float timeToMove = 1f;
@@ -25,13 +29,15 @@ public class PlayerMovement : MonoBehaviour
 	{
 		if (instance != null && instance != this) { Destroy(this); }
 		instance = this;
+		anim = GetComponent<Animator>();
+		spriteRenderer = GetComponent<SpriteRenderer>();
 	}
 
 	private void Update()
 	{
 		switch (state) {
 			case "idle":
-				if (Manager.instance.moves <= 0) return;
+				if (Manager.instance.moves <= 0 || locked) return;
 
 				float horizontalInput = Input.GetAxisRaw("Horizontal");
 				float verticalInput = Input.GetAxisRaw("Vertical");
@@ -52,6 +58,7 @@ public class PlayerMovement : MonoBehaviour
 					{
 						// pushblock.push returns a bool based on if block can be pushed
 						if (!pushBlock.Push(moveEndPos - transform.position)) ChangeState("pushing");
+						else return;
 					}
 					else if (collision.CompareTag("Door") && Manager.instance.keys > 0)
                     {
@@ -96,34 +103,37 @@ public class PlayerMovement : MonoBehaviour
 
 		if (state == "idle")
 		{
-			Collider2D collisionCollider = Physics2D.OverlapCircle(transform.position, 0.2f);
+			anim.Play("Idle");
+			Collider2D[] collisionCollider = Physics2D.OverlapCircleAll(transform.position, 0.2f);
+			bool checkMoves = true;
 			if (collisionCollider != null) {
-				GameObject collision = collisionCollider.gameObject;
-				if (checkLayer(collision, victoryLayer))
-                {
-					print("win");
-					ChangeState("win");
-					return;
-				}
-				else if (checkLayer(collision, keyLayer))
+				foreach (Collider2D collision in collisionCollider)
 				{
-					Manager.instance.keys++;
-					Animator keyAnim = collision.GetComponent<Animator>();
-					//keyAnim.Play("");
-					//Destroy(collision.gameObject, keyAnim.GetCurrentAnimatorStateInfo(0).length);
-					Destroy(collision);
-				}
-				else if (checkLayer(collision, spikeLayer))
-				{
-					Die();
-					return;
+					if (CheckLayer(collision.gameObject, victoryLayer))
+					{
+						Manager.instance.Continue();
+						ChangeState("win");
+						return;
+					}
+					else if (CheckLayer(collision.gameObject, keyLayer))
+					{
+						Manager.instance.keys++;
+						Destroy(collision.gameObject);
+					}
+					else if (CheckLayer(collision.gameObject, spikeLayer))
+					{
+						Die();
+						checkMoves = false;
+					}
 				}
 			}
-            Manager.instance.CheckMoves();
+            if (checkMoves) Manager.instance.CheckMoves();
         }
 
 		if (state == "moving")
 		{
+			anim.Play("Move");
+			if (moveEndPos.y - transform.position.y == 0) spriteRenderer.flipX = (moveEndPos.x - transform.position.x) < 0;
 			UpdateMove();
 			moveLerpTime = 0;
 			moveStartPos = transform.position;
@@ -131,8 +141,15 @@ public class PlayerMovement : MonoBehaviour
 
 		if (state == "pushing")
 		{
+			anim.Play("Kick");
+			if (moveEndPos.y - transform.position.y == 0) spriteRenderer.flipX = (moveEndPos.x - transform.position.x) < 0;
 			UpdateMove();
 			pushTimer = 0.2f;
+		}
+
+		if (state == "die")
+		{
+			anim.Play("Death");
 		}
 	}
 
@@ -147,7 +164,7 @@ public class PlayerMovement : MonoBehaviour
 		ChangeState("die");
 	}
 
-	bool checkLayer(GameObject obj, LayerMask layer)
+	bool CheckLayer(GameObject obj, LayerMask layer)
     {
 		return (layer | (1 << obj.layer)) == layer;
     }

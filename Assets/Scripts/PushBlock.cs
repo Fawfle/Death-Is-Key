@@ -10,7 +10,12 @@ public class PushBlock : MonoBehaviour
 	public bool Push(Vector3 offsetPos)
 	{
 		Vector3 endPos = transform.position + offsetPos;
-		if (Physics2D.OverlapCircle(endPos, 0.2f, collisionLayer)) return true;
+		Collider2D collision = Physics2D.OverlapCircle(endPos, 0.2f, collisionLayer);
+		if (collision != null)
+		{
+			if (collision.CompareTag("Pit")) collision.gameObject.GetComponent<Pit>().BlockCollision(gameObject);
+			else return true;
+		}
 		StartCoroutine(PushRoutine(endPos));
 		return false;
 	}
