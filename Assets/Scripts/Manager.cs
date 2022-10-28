@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
+using System;
 
 
 public class Manager : MonoBehaviour
@@ -27,6 +28,7 @@ public class Manager : MonoBehaviour
 
     public bool tutorial = false;
 
+    private Action Confirm;
 
     private void Awake()
 	{
@@ -44,8 +46,7 @@ public class Manager : MonoBehaviour
         transitionAnim = GameObject.Find("Transition Screen").GetComponent<Animator>();
         moveLayout = GameObject.Find("Move Layout");
         retryButton = GameObject.Find("Retry Button").GetComponent<Button>();
-        retryButton.onClick.AddListener(Reset);
-
+    
         playerStartPos = player.transform.position;
 
         for (int i = 1; i< moveList.Count; i++)
@@ -108,6 +109,7 @@ public class Manager : MonoBehaviour
 	public void Lose()
 	{
 		loseScreenAnim.Play("Slide In");
+        Confirm = Reset;
         PlayerMovement.instance.anim.Play("Lose");
 	}
 
@@ -116,9 +118,8 @@ public class Manager : MonoBehaviour
         loseScreenAnim.Play("Slide In");
         // reuse lose screen
         loseScreenAnim.gameObject.transform.GetChild(0).gameObject.GetComponent<TMP_Text>().text = " YOU WIN!";
-        retryButton.onClick.RemoveAllListeners();
-        retryButton.transform.GetChild(0).gameObject.GetComponent<TMP_Text>().text = "CONTINUE";
-        retryButton.onClick.AddListener(() => StartCoroutine(LoadNextScene()));
+        retryButton.transform.GetChild(0).gameObject.GetComponent<TMP_Text>().text = "PRESS ENTER";
+        Confirm = () => StartCoroutine(LoadNextScene());
     }
 
     IEnumerator LoadNextScene()
@@ -134,6 +135,10 @@ public class Manager : MonoBehaviour
 		{
             Reset();
 		}
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            Confirm?.Invoke();
+        }
 	}
 
 	public void Reset()

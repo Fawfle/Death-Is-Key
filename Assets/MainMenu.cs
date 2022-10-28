@@ -5,8 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    public void LoadNextScene()
-	{
-		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-	}
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Return)) {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
+    }
 }
