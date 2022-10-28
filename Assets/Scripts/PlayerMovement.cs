@@ -158,7 +158,7 @@ public class PlayerMovement : MonoBehaviour
 		Manager.instance.Move();
 	}
 
-	void Die()
+	public void Die()
 	{
 		Manager.instance.Die();
 		ChangeState("die");

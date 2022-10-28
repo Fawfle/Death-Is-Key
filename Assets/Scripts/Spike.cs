@@ -24,6 +24,6 @@ public class Spike : MonoBehaviour
 
 	private void OnDisable()
 	{
-		if (switchOnMove) PlayerMovement.instance.onMove += Switch;
+		if (switchOnMove) PlayerMovement.instance.onMove -= Switch;
 	}
 }
