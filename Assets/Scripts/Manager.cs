@@ -56,12 +56,14 @@ public class Manager : MonoBehaviour
 		}
 
         SetMoves(moveList[0]);
+
+        AnkhAnimator.instance.Respawn = Respawn;
     }
 
     public void SetMoves(int newMoves)
 	{
         moves = newMoves;
-        if (!tutorial) movesText.text = $"{moves}";
+        if (!tutorial) movesText.text = $"MOVES:{moves}";
     }
 
 	public void Move()
@@ -71,7 +73,7 @@ public class Manager : MonoBehaviour
 
     public void CheckMoves()
 	{
-        if (moves <= 0)
+        if (moves <= 0 && !PlayerMovement.instance.locked)
 		{
             Lose();
 		}
@@ -90,20 +92,9 @@ public class Manager : MonoBehaviour
 
         Destroy(moveLayout.transform.GetChild(0).gameObject);
         SetMoves(moveList[moveListIndex]);
-        PlayerMovement.instance.ChangeState("idle");
         PlayerMovement.instance.locked = true;
+        PlayerMovement.instance.ChangeState("idle");
     }
-
-	private void OnEnable()
-	{
-        AnkhAnimator.instance.Respawn += Respawn;
-	}
-
-	private void OnDisable()
-	{
-        AnkhAnimator.instance.Respawn -= Respawn;
-    }
-
 
 
 	public void Lose()
@@ -117,7 +108,7 @@ public class Manager : MonoBehaviour
 	{
         loseScreenAnim.Play("Slide In");
         // reuse lose screen
-        loseScreenAnim.gameObject.transform.GetChild(0).gameObject.GetComponent<TMP_Text>().text = " YOU WIN!";
+        loseScreenAnim.gameObject.transform.GetChild(0).gameObject.GetComponent<TMP_Text>().text = "YOU WIN!";
         retryButton.transform.GetChild(0).gameObject.GetComponent<TMP_Text>().text = "PRESS ENTER";
         Confirm = () => StartCoroutine(LoadNextScene());
     }

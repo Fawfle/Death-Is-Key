@@ -8,6 +8,7 @@ TagManager:
   - Block
   - Pit
   - Music
+  - StartMusic
   layers:
   - Default
   - TransparentFX

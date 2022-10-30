@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class PlayerMovement : MonoBehaviour
 {
+	public AudioSource moveSound, kickSound, deathSound, collectKeySound;
+
 	public static PlayerMovement instance;
 	[HideInInspector] public Animator anim;
 	[HideInInspector] public SpriteRenderer spriteRenderer;
@@ -35,9 +36,10 @@ public class PlayerMovement : MonoBehaviour
 
 	private void Update()
 	{
+		if (locked) return;
 		switch (state) {
 			case "idle":
-				if (Manager.instance.moves <= 0 || locked) return;
+				if (Manager.instance.moves <= 0) return;
 
 				float horizontalInput = Input.GetAxisRaw("Horizontal");
 				float verticalInput = Input.GetAxisRaw("Vertical");
@@ -62,6 +64,7 @@ public class PlayerMovement : MonoBehaviour
 					}
 					else if (collision.CompareTag("Door") && Manager.instance.keys > 0)
                     {
+						collectKeySound.Play();
 						Manager.instance.keys--;
 						Destroy(collision.gameObject);
                         ChangeState("moving");
@@ -106,6 +109,7 @@ public class PlayerMovement : MonoBehaviour
 			anim.Play("Idle");
 			Collider2D[] collisionCollider = Physics2D.OverlapCircleAll(transform.position, 0.2f);
 			bool checkMoves = true;
+			if (locked) return;
 			if (collisionCollider != null) {
 				foreach (Collider2D collision in collisionCollider)
 				{
@@ -117,6 +121,7 @@ public class PlayerMovement : MonoBehaviour
 					}
 					else if (CheckLayer(collision.gameObject, keyLayer))
 					{
+						collectKeySound.Play();
 						Manager.instance.keys++;
 						Destroy(collision.gameObject);
 					}
@@ -132,6 +137,7 @@ public class PlayerMovement : MonoBehaviour
 
 		if (state == "moving")
 		{
+			moveSound.Play();
 			anim.Play("Move");
 			if (moveEndPos.y - transform.position.y == 0) spriteRenderer.flipX = (moveEndPos.x - transform.position.x) < 0;
 			UpdateMove();
@@ -141,6 +147,7 @@ public class PlayerMovement : MonoBehaviour
 
 		if (state == "pushing")
 		{
+			kickSound.Play();
 			anim.Play("Kick");
 			if (moveEndPos.y - transform.position.y == 0) spriteRenderer.flipX = (moveEndPos.x - transform.position.x) < 0;
 			UpdateMove();
@@ -149,6 +156,7 @@ public class PlayerMovement : MonoBehaviour
 
 		if (state == "die")
 		{
+			deathSound.Play();
 			anim.Play("Death");
 		}
 	}

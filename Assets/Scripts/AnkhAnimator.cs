@@ -6,6 +6,7 @@ using System;
 
 public class AnkhAnimator : MonoBehaviour
 {
+    public AudioSource mainSound, breakSound;
     public static AnkhAnimator instance;
     public Action Respawn;
 
@@ -14,6 +15,7 @@ public class AnkhAnimator : MonoBehaviour
 
     public List<Sprite> sprites;
     public Sprite sprite;
+    public int spriteIndex;
 
 	private void Awake()
 	{
@@ -23,7 +25,8 @@ public class AnkhAnimator : MonoBehaviour
         image = GetComponent<Image>();
         anim = GetComponent<Animator>();
 
-        sprite = sprites[0]; 
+        sprite = sprites[0];
+        spriteIndex = 0;
     }
 
     void ResetSprite()
@@ -34,7 +37,9 @@ public class AnkhAnimator : MonoBehaviour
     void CrackAnkh()
 	{
         //print(sprites.IndexOf(sprite));
-        image.sprite = sprites[sprites.IndexOf(sprite) + 1];
+        breakSound.Play();
+        spriteIndex++;
+        image.sprite = sprites[spriteIndex];
 	}
 
     void RespawnEvent()
@@ -49,6 +54,7 @@ public class AnkhAnimator : MonoBehaviour
 
     public void PlayAnimation()
 	{
+        mainSound.Play();
         anim.Play("Effect");
 	}
 }
